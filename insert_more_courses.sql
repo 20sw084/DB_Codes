@@ -4,4 +4,4 @@ insert into courses values
 ,('Introduction to C++',3,'CS107')
 ,('Website Development',3,'CS108')
 ,('Internet Authoring',3,'CS109')
-,('Artificial Intelligence',3,'CS110')
+,('Artificial Intelligence',3,'CS110') 
