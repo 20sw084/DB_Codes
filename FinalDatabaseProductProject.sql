@@ -333,16 +333,16 @@ SELECT @@global.time_zone;
 
 -- 6. Subqueries and merge statements:  Write a query for each of the tasks below.  In other words, do not combine two tasks in the same query
 6.1.	Create a subquery that calculates the average of the numeric column with nulls and then if the row has a null, replace the null with the average number
-SELECT AVG(weightinmgs) AS weightinmgs
-From pharmacydb.stock;
+SELECT AVG(charge) AS charge
+From truck_company_db.repair;
 
-	SELECT idstock,
-		 ISNULL(weightinmgs, AVG(weightinmgs)) As weightinmgs
-	  FROM pharmacydb.stock;
-UPDATE pharmacydb.stock
+	SELECT truckid,
+		 ISNULL(charge, AVG(charge)) As charge
+	From truck_company_db.repair;
+UPDATE truck_company_db.repair
     SET 
-    AVG(weightinmgs)
-WHERE weightinmgs = 0;
+    AVG(charge)
+WHERE charge = null;
 Avg(Coalesce(weightinmgs,0));
 
 
@@ -354,7 +354,7 @@ ORDER BY city;
 
 
 6.3.	Create a subquery with a that extract data from one table and use it to limit data from another table (for examples look at Chapter 7’s lecture notes, page 1 the vendor ID example)
-
+	
 
 6.4.	driversUse a subquery with a not in operator
 Select * from repair
