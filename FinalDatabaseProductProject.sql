@@ -414,6 +414,55 @@ ORDER BY
     y, m, d ;
 
 7.2 	Create a view with a check option
+CREATE OR REPLACE VIEW repair_sales AS
+    SELECT 
+        truckNumber,
+        timeIN,
+        idwork_desc,
+        timeOut,
+        charge
+    FROM
+        repair
+    WHERE
+        truckNumber LIKE '%U9%' 
+WITH CHECK OPTION;
+
+7.3.	Create a complex view
+
+CREATE VIEW LoadswithDesc
+AS
+SELECT ld.loadID, 
+        ld.DelivaryDate, 
+        ld.DelivaryTime, 
+        client.clientID as companyName,
+        ld.driverId,
+        ld.deliveryAddress,
+        ld.idload_desc,
+        ld.pickupAddress,
+        ld.cost
+FROM loads ld
+INNER JOIN clients client
+ON ld.clientID = client.clientID
+
+SELECT 
+    * 
+FROM 
+    truck_company_db.loadswithdesc
+ORDER BY
+    loadId;
+
+7.4.	Update a record in a simple view
+UPDATE repair_sales
+SET charge='130'
+WHERE timeOut = '2021-08-12 17:50:00';
+
+
+
+SELECT 
+    * 
+FROM 
+    truck_company_db.repair_sales
+
 
 
 
