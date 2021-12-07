@@ -452,18 +452,277 @@ ORDER BY
     loadId;
 
 7.4.	Update a record in a simple view
+use truck_company_db;
 UPDATE repair_sales
 SET charge='130'
 WHERE timeOut = '2021-08-12 17:50:00';
 
 
-
-SELECT 
-    * 
-FROM 
-    truck_company_db.repair_sales
+7.5.	Display only the to 10 records in one of your tables
+select * from Clients ORDER BY ClientId LIMIT 10;
 
 
+8. 	Indexes
+8.1.	Create an index (other than unique or primary key)
+	CREATE INDEX Contents
+ON work_description (idwork_desc, work_desc);
+
+8.2.	List all indexes using a query
+SELECT
+     ix.name as [IndexName],
+     tab.name as [Table Name],
+     COL_NAME(ix.object_id, ixc.column_id) as [Column Name],
+     ix.type_desc,
+     ix.is_disabled
+FROM
+     sys.indexes ix 
+INNER JOIN
+     sys.index_columns ixc 
+        ON  ix.object_id = ixc.object_id 
+        and ix.index_id = ixc.index_id
+INNER JOIN
+     sys.tables tab 
+        ON ix.object_id = tab.object_id 
+WHERE
+     ix.is_primary_key = 0          /* Remove Primary Keys */
+     AND ix.is_unique = 0           /* Remove Unique Keys */
+     AND ix.is_unique_constraint = 0 /* Remove Unique Constraints */
+     AND tab.is_ms_shipped = 0      /* Remove SQL Server Default Tables */
+ORDER BY
+    ix.name, tab.name
+
+10.1.	Create and call a stored procedure that reads data from a table
+
+USE `truck_company_db`;
+DROP procedure IF EXISTS `all_clients`;
+
+DELIMITER $$
+USE `truck_company_db`$$
+CREATE PROCEDURE `all_clients` ()
+BEGIN
+Select * FROM clients;
+END$$
+
+DELIMITER ;
+
+
+CALL all_clients
+
+10.2.	Create and call a stored procedure that has a case statement
+		USE `truck_company_db`;
+DROP procedure IF EXISTS `case_procedure`;
+
+DELIMITER $$
+USE `truck_company_db`$$
+CREATE PROCEDURE `case_procedure` ()
+BEGIN
+ DECLARE v_state CHAR(3);
+    SET v_state = state;
+
+    CASE  v_state
+      WHEN 'PA' THEN
+        UPDATE state SET statename = 'S1';
+      WHEN 'KY' THEN
+        UPDATE state SET statename = 'S2';
+      ELSE
+        UPDATE state SET statename = 'S3';
+      END CASE;
+END$$
+
+DELIMITER ;
+
+call case_procedure
+
+10.3.	Create and call a stored procedure that has an if statement
+BEGIN 
+ DECLARE chrge INT Default 0;
+ SELECT  
+        chrge=charge
+    FROM
+        repair
+    WHERE
+        idwork_desc = 6;
+    SELECT chrge;
+    IF chrge > 100
+    BEGIN THEN
+        PRINT 'Great! The charges amount in greater than 100';
+    END
+END
+
+
+10.4.	Create and call a stored procedure that has a conditional handler for SQLWARNING
+USE `truck_company_db`;
+DROP procedure IF EXISTS `handlerdemo`;
+
+DELIMITER $$
+USE `truck_company_db`$$
+CREATE PROCEDURE `handlerdemo` ()
+       BEGIN
+         DECLARE CONTINUE HANDLER FOR SQLSTATE '23000' SET @x2 = 1;
+         SET @x = 1;
+         INSERT INTO clients.t VALUES (1);
+         SET @x = 2;
+         INSERT INTO clients.t VALUES (1);
+         SET @x = 3;
+       END;$$
+
+DELIMITER ;
+
+USE `truck_company_db`;
+call handlerdemo
+
+10.5.	Create a procedure that has a transaction
+CREATE PROCEDURE [truck_company_db].[InsertPersonalDetailsAndAccount]
+       -- Add the parameters for the stored procedure here
+       @FirstName varchar(50),
+       @LastName varchar(50),
+       @Age smallint,
+       @Active bit,
+       @Salary money,
+       @PPFDeduction money
+AS
+BEGIN
+       -- SET NOCOUNT ON added to prevent extra result sets from
+       -- interfering with SELECT statements.
+       SET NOCOUNT ON;
+
+       BEGIN TRAN
+              BEGIN TRY
+                     -- Insert into PersonalDetails table first
+                     INSERT INTO PersonalDetails
+                            (FirstName, LastName, Age, Active)
+                     VALUES
+                            (@FirstName, @LastName, @Age, @Active)
+
+                     DECLARE @pdId int
+                     SET @pdId = SCOPE_IDENTITY()
+                     -- now insert into Accounts table
+                     INSERT INTO Accounts
+                            (Salary, PPFDeduction, PersonalDetailsId)
+                     VALUES
+                            (@Salary, @PPFDeduction, @pdId)
+                     
+              -- if not error, commit the transcation
+              COMMIT TRANSACTION
+       END TRY
+       BEGIN CATCH
+              -- if error, roll back any chanegs done by any of the sql statements
+              ROLLBACK TRANSACTION
+       END CATCH
+END
+
+
+
+10.6.	Create and use a stored function
+USE `truck_company_db`;
+DROP procedure IF EXISTS `all_clients`;
+
+DELIMITER $$
+USE `truck_company_db`$$
+CREATE PROCEDURE `all_clients` ()
+BEGIN
+Select * FROM clients;
+END$$
+
+DELIMITER ;
+
+
+CALL all_clients
+
+
+11.1.	Create and use an update trigger
+DELIMITER $$
+
+CREATE TRIGGER after_sales_update
+AFTER UPDATE
+ON clients FOR EACH ROW
+BEGIN
+    IF OLD.quantity <> new.quantity THEN
+        INSERT INTO SalesChanges(salesId,beforeQuantity, afterQuantity)
+        VALUES(old.id, old.quantity, new.quantity);
+    END IF;
+END$$
+
+DELIMITER ;
+
+11.2. 	Create and use a trigger that saves data to a separate table 
+
+
+12.1		Show a rollback using a set point
+BEGIN TRANSACTION
+ 
+  INSERT INTO InsertPersonalDetailsAndAccount 
+  VALUES (20, 'Jonny', 'Cat5', 2000)
+ 
+  UPDATE InsertPersonalDetailsAndAccount
+  SET price = '25' WHERE id = 20
+ 
+  DELETE from InsertPersonalDetailsAndAccount
+  WHERE id = 20
+ 
+COMMIT TRANSACTION
+
+
+
+13.1.	What users would you create?
+
+CREATE USER Jonny
+    IDENTIFIED BY AZ3BC2
+    DEFAULT TABLESPACE data_ts
+    QUOTA 100M ON test_ts
+    QUOTA 500K ON data_ts
+    TEMPORARY TABLESPACE temp_ts
+    PROFILE clerk;
+GRANT create session TO Jonny;
+
+CREATE USER John
+    IDENTIFIED BY AZ4BC2
+    DEFAULT TABLESPACE data_ts
+    QUOTA 100M ON test_ts
+    QUOTA 500K ON data_ts
+    TEMPORARY TABLESPACE temp_ts
+    PROFILE clerk;
+GRANT create session TO John;
+
+CREATE USER Jonny
+    IDENTIFIED BY AZ3BC2
+    DEFAULT TABLESPACE data_ts
+    QUOTA 100M ON test_ts
+    QUOTA 500K ON data_ts
+    TEMPORARY TABLESPACE temp_ts
+    PROFILE clerk;
+GRANT create session TO Jonny;
+
+CREATE USER Jonny
+    IDENTIFIED BY AZ3BC2
+    DEFAULT TABLESPACE data_ts
+    QUOTA 100M ON test_ts
+    QUOTA 500K ON data_ts
+    TEMPORARY TABLESPACE temp_ts
+    PROFILE clerk;
+GRANT create session TO Jonny;
+	
+    13.2.	What roles would you create?
+CREATE PROFILE clerk LIMIT
+    SESSIONS_PER_USER 1
+    IDLE_TIME 30
+    CONNECT_TIME 600;
+
+CREATE USER jfee
+    IDENTIFIED BY wildcat
+    DEFAULT TABLESPACE users
+    TEMPORARY TABLESPACE temp_ts
+    QUOTA 500K ON users
+    PROFILE clerk;
+
+CREATE USER dcranney
+    IDENTIFIED BY bedrock
+    DEFAULT TABLESPACE users
+    TEMPORARY TABLESPACE temp_ts
+    QUOTA unlimited ON users;
+
+CREATE USER userscott
+     IDENTIFIED BY scott1;
 
 
 
