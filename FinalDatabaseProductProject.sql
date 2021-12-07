@@ -1,4 +1,4 @@
-  use truck_company_db;
+use truck_company_db;
 CREATE TABLE trucks(
 truckNumber char(10) PRIMARY KEY,
 Lease BOOL,
@@ -333,21 +333,87 @@ SELECT @@global.time_zone;
 
 -- 6. Subqueries and merge statements:  Write a query for each of the tasks below.  In other words, do not combine two tasks in the same query
 6.1.	Create a subquery that calculates the average of the numeric column with nulls and then if the row has a null, replace the null with the average number
+SELECT AVG(weightinmgs) AS weightinmgs
+From pharmacydb.stock;
 
-float f=SELECT SUM(weightinmgs) / COUNT(weightinmgs) FROM stock;
-use pharmacydb;
+	SELECT idstock,
+		 ISNULL(weightinmgs, AVG(weightinmgs)) As weightinmgs
+	  FROM pharmacydb.stock;
 UPDATE pharmacydb.stock
     SET 
-    f
-	-- 	AVG(weightinmgs)  AS Avg_Expense
+    AVG(weightinmgs)
 WHERE weightinmgs = 0;
 Avg(Coalesce(weightinmgs,0));
 
+
 6.2.	Create a subquery  with  where and order by clauses
+SELECT companyName
+FROM truck_company_db.clients
+WHERE city = 'Reno'
+ORDER BY city;
+
+
 6.3.	Create a subquery with a that extract data from one table and use it to limit data from another table (for examples look at Chapter 7’s lecture notes, page 1 the vendor ID example)
-6.4.	Use a subquery with a not in operator
+
+
+6.4.	driversUse a subquery with a not in operator
+Select * from repair
+WHERE timeIn NOT IN ('2021-08-12 14:40:00', '2021-10-26 12:40:00', '2021-10-26 12:34:00')
+
 6.5.	Use a subquery in a DML action
+SELECT  companyName,street,city
+FROM clients
+where city='Reno' OR city='Columbus'
+
 6.6.	Create a query with a CTE (with statement)
+WITH
+  work_description (idwork_desc, work_desc)
+  AS
+  (
+    SELECT REPAIRID, TRUCKNUMBER, TIMEIN, IDWORK_DESC, TIMEOUT
+    FROM repair
+    WHERE idwork_desc IS NULL
+    UNION ALL
+    SELECT t.REPAIRID, t.TRUCKNUMBER, t.TIMEIN, 
+       r.idwork_desc + 1 , t.TIMEOUT
+    FROM repair t
+      INNER JOIN work_description r
+        ON t.RepairID = r.idwork_desc
+  )
+SELECT
+  trucknumber AS TruckNumber, 
+  timeIn,
+  (SELECT trucknumber FROM repair 
+    WHERE idwork_desc = work_description.idwork_desc) AS WorkDescription
+FROM work_description 
+ORDER BY idwork_desc, work_description.idwork_desc 
+	
+    
+ --  7.  Views
+7.1.	Create a simple view
+CREATE VIEW truck_company_db.repair_sales
+AS
+SELECT
+	truckNumber,
+    year(timeIN) AS y,
+    month(timeIN) AS m,
+    day(timeIN) AS d,
+    i.idwork_Desc,
+    timeOut,
+	charge AS repair
+FROM
+    truck_company_db.repair AS o
+INNER JOIN truck_company_db.work_description AS i
+    ON o.idwork_desc = i.idwork_desc;
+
+SELECT 
+    * 
+FROM 
+    truck_company_db.repair_sales
+ORDER BY
+    y, m, d ;
+
+7.2 	Create a view with a check option
 
 
 
@@ -355,12 +421,13 @@ Avg(Coalesce(weightinmgs,0));
 
 
 
-
-select * from clients;
-select * from drivers;
-select * from truck_company_db.repair;
-select * from loads;
-select * from trucks;
+select * from truck_company_db.clients;
+select  * from truck_company_db.drivers;
+select  * from truck_company_db.repair ;
+select  * from truck_company_db.loads;
+select  * from truck_company_db.load_description;
+select  * from truck_company_db.work_description;
+select  * from truck_company_db.trucks;
 select * from pharmacydb.userrecord;
 select * from pharmacydb.stock;
 select * from pharmacydb.salerecord;
