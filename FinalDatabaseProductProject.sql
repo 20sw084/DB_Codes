@@ -1,3 +1,5 @@
+-- First Create Database named truck_company_db manually. (https://dev.mysql.com/doc/workbench/en/wb-getting-started-tutorial-creating-a-model.html)
+
 use truck_company_db;
 CREATE TABLE trucks(
 truckNumber char(10) PRIMARY KEY,
