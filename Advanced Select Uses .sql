@@ -1,5 +1,5 @@
 Select [FirstName],[LastName]
-From [Employees]
+From [Employees] 
 Where LastName='Rajput';
 
 
