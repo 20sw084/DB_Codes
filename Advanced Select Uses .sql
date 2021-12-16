@@ -3,7 +3,6 @@ From [Employees]
 Where LastName='Rajput';
 
 
-
 Select [FirstName],[LastName]
 From [Employees]
 Where LastName like '%k%';                                    --'%' is a wildcard
