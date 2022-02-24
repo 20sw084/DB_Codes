@@ -1,0 +1,187 @@
+CREATE TABLE empCopy AS (SELECT * FROM emp);
+SELECT * FROM empCopy;
+
+CREATE TABLE t(t_id number PRIMARY KEY, t_name varchar2(10), t_age int);
+desc t
+drop table t
+Insert INTO t(t_name,t_age)  values('Rana',22);
+SELECT * FROM t;
+
+drop table copy
+desc copy;
+CREATE TABLE copy AS (SELECT * FROM emp);
+
+CREATE TABLE HR(hire_date DATE, sal number(8,2) default 8.4, today DATE DEFAULT sysdate);
+Insert into HR(hire_date,sal) Values('2-21-21',7);
+select * FROM HR;
+
+
+
+CREATE TABLE test1(ord_num decimal(6) NOT NULL,ord_amount decimal(12,2) NULL,ord_date DATE NOT NULL,cust_code nvarchar2(6) NOT NULL,agent_code char(6) NOT NULL);
+Insert into test1 values(768778,567.78,'12-12-2021',56,'uiyj');
+SELECT * FROM test1;
+
+
+
+SELECT ename,sal-2300 SALARY FROM copy;
+SELECT ename,sal-2300 ANnUAlSALARY FROM copy;
+SELECT ename,sal-2300 "ANNUAL SALARY" FROM copy;
+SELECT ename,sal-2300 AS AnnualSALARY FROM copy;
+
+
+SELECT UNIQUE deptno FROM copy;
+SELECT UNIQUE deptno , job FROM copy;
+SELECT UNIQUE deptno || '...Jonny...' || ename FROM copy;
+
+SELECT COncat(COncat('john...',ename),COncat('cena...',sal)) as "CNCTNTD" from copy; 
+
+
+SELECT empno,ename,sal*12+100 "SALARY WITH 100$ Bonus" FROM copy;
+
+SELECT empno,ename, sal+100 "Monthly Salary" FROM emp;
+
+SELECT CONCAT(CONCAT(initcap(ename),': 1 month Salary = '),sal) "Monthly Salary" FROM emp;
+
+SELECT UNIQUE job from copy;
+
+SELECT empno,ename,job,sal from copy WHERE sal<2000 AND sal>1500;
+
+
+SELECT empno,ename,job,sal from copy WHERE job='MANAGER' AND sal>1500;
+
+SELECT * FROM copy WHERE NOT job = 'SALESMAN';
+
+SELECT * FROM copy WHERE NOT job = 'CLERK' AND deptno = 20;
+
+SELECT ename,job , sal from copy WHERE job= 'SALESMAN';
+
+SELECT ename,job , sal from copy WHERE job='MANAGER' AND sal>2450;
+
+
+SELECT ename,job , sal from copy WHERE job='MANAGER' OR job='SALESMAN' AND sal>2450;
+
+SELECT * FROM emp WHERE sal BETWEEN 1500 AND 3000;
+
+SELECT * FROM copy WHERE job like '____G__';
+
+SELECT * FROM copy WHERE ename LIKE 'B%';
+
+SELECT * FROM copy WHERE ename LIKE 'A__E%';
+
+SELECT * FROM copy WHERE ename LIKE '%A%A%';
+
+SELECT * FROM copy WHERE ename LIKE 'S%H';
+
+SELECT * FROM copy WHERE ename LIKE '_E%';
+
+SELECT empno, job, sal FROM copy WHERE job LIKE 'MAN%' AND sal*12>10000;
+
+SELECT * FROM emp WHERE job in ('PRESIDENT','CLERK');
+
+SELECT * FROM copy WHERE job IN ('CLERK','ANALYST') AND NOT sal in (1000,2000,3000);
+
+SELECT * FROM copy WHERE comm is NULL;
+
+SELECT * FROM copy WHERE comm is NOT NULL;
+
+SELECT * FROM emp WHERE hiredate>'2/21/81' ORDER BY sal DESC;
+
+SELECT DISTINCT * FROM copy WHERE hiredate>'2/21/81' ORDER By deptno, ename ASC;
+
+SELECT ename,hiredate FROM copy ORDER BY HIREDATE;
+
+SELECT ename , sal*12 "Annual Salary" FROM copy ORDER BY sal desc;
+
+SELECT ename , deptno, sal FROM copy ORDER BY deptno,sal DESC;
+
+desc dual
+
+SELECT CONCAT('HELLO','WORLD') FROM dual
+
+SELECT instr('fellows','e') FROM dual;
+
+SELECT length('fellows') FROM dual;
+
+SELECT rtrim('fellowssss','s') FROM dual;
+
+SELECT ltrim('fellows') FROM dual;
+
+SELECT replace('fellows','e','o') FROM dual;
+
+SELECT reverse('fellows') FROM dual;
+
+SELECT substr('fellows',-4,4) FROM dual;
+
+SELECT LOWER('FF') FROM dual
+
+SELECT UPPER('ff') FROM dual
+
+SELECT INITCAP('JONNY') FROM dual;
+
+SELECT ADD_MONTHS(sysdate,4) FROM dual;
+
+SELECT EXTRACT(DAY FROM sysdate) FROM dual;
+
+SELECT EXTRACT(MONTH FROM sysdate) FROM dual;
+
+SELECT EXTRACT(YEAR FROM sysdate) FROM dual;
+
+SELECT LAST_DAY(sysdate) FROM DUAL;
+
+SELECT MONTHS_BETWEEN(sysdate,'1/24/2020') FROM DUAL;
+
+SELECT NEXT_DAY(sysdate,'MONDAY') FROM DUAL;
+
+SELECT TRUNC(29.92) FROM dual;
+
+SELECT CEIL(29.92) FROM dual;
+
+SELECT ROUND(29.92) FROM dual;
+
+SELECT NVL(null,0) FROM copy;
+
+SELECT NVL2(comm, 1 , 0) FROM copy;
+
+SELECT empno, ename, sal+comm FROM copy;
+
+SELECT empno, ename, sal+ NVL(comm, 0) "SALARY + COMMISION" FROM copy;
+
+SELECT empno, ename, sal+ NVL2(comm,comm+sal,sal) "SALARY + COMMISION" FROM copy;
+
+SELECT empno, ename, NVL2(comm,comm+sal,sal) "SALARY + COMMISION" FROM copy;
+
+SELECT SUM(sal) FROM copy;
+
+SELECT MIN(sal) FROM copy;
+
+SELECT MAX(sal) FROM copy;
+
+SELECT TRUNC(AVG(sal)) FROM copy;
+
+SELECT COUNT(*) FROM copy;
+
+SELECT COUNT(comm) FROM copy;
+
+SELECT COUNT(DISTINCT deptno) FROM copy;
+
+SELECT deptno FROM emp GROUP BY deptno ORDER BY deptno;
+
+SELECT job FROM emp GROUP BY job;
+
+SELECT job , deptno FROM emp GROUP BY job,deptno;
+
+SELECT deptno,avg(sal) FROM emp;
+
+SELECT deptno,avg(sal) FROM emp GROUP BY deptno;
+
+SELECT deptno, MAX(AVG(sal)) FROM emp GROUP BY deptno;
+
+SELECT MAX(AVG(sal)) FROM emp GROUP BY deptno;
+
+SELECT mgr,MIN(sal) FROM copy WHERE NOT mgr = null GROUP BY mgr ORDER BY mgr desc;
+
+SELECT job,deptno,SUM(sal) FROM copy GROUP BY job,deptno;
+
+SELECT job,hiredate,SUM(sal*12) FROM copy WHERE hiredate LIKE '%1981' AND GROUP BY job,hiredate;
+SELECT job,SUM(sal*12) FROM copy GROUP BY job;
+
