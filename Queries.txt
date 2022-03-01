@@ -1,0 +1,137 @@
+CREATE TABLE Test_1(
+ord_num DECIMAL(6) NOT NULL, 
+ord_amount DECIMAL(12,2) , 
+ord_date DATE NOT NULL , 
+cust_code char(6) NOT NULL,
+agent_code char(6) NOT NULL
+);
+DESC Test_1
+DELETE Test_1;
+DROP Test_1;
+CREATE TABLE ecopy AS SELECT * FROM emp;
+SELECT * FROM ecopy;
+DROP ecopy;
+SELECT ename, (sal*12) AS "ANNUAL SALARY" FROM emp;
+SELECT DISTINCT deptno || ' BELONGS TO ' || job AS CONCATENATED FROM ecopy;
+
+SELECT (sal*12)+100 FROM eCopy
+SELECT (sal+100)*12 FROM eCopy; 
+SELECT ename || ': 1 month Salary = ' || sal "MonthlySalary" FROM eCopy;
+SELECT DISTINCT job FROM eCopy;
+SELECT  DISTINCT job,hiredate FROM eCopy WHERE hiredate> '02/21/1981';
+SELECT ename FROM emp WHERE job<> 'CLERK' AND deptno=30;
+SELECT ename , job , sal FROM emp WHERE job='SALESMAN'
+
+SELECT ename , job , sal FROM emp WHERE job='SALESMAN' AND sal>2450
+
+SELECT ename, job, sal FROM emp WHERE job = 'SALESMAN' OR job = 'MANAGER' AND sal > 2450;
+
+SELECT ename,job , sal from emp WHERE job='MANAGER' OR job='SALESMAN' AND sal>2450;
+
+SELECT * FROM emp WHERE ename LIKE '%A%A%';
+
+
+SELECT * FROM emp WHERE ename LIKE 'S%H';
+
+SELECT * FROM emp WHERE ename LIKE '_E%';
+
+SELECT * FROM emp WHERE job LIKE 'MAN%' AND (sal*12)>10000;
+
+
+SELECT * FROM emp WHERE job IN ('CLERK','ANALYST') AND sal NOT IN (1000,2000,3000);
+
+
+SELECT * FROM emp WHERE comm IS NOT NULL;
+
+
+SELECT * FROM eCopy WHERE hiredate> '02/21/1981' ORDER BY sal desc;
+
+SELECT * FROM eCopy ORDER BY deptno asc ,ename desc;
+
+
+SELECT * FROM eCopy ORDER by hiredate
+
+
+SELECT ename , sal, deptno FROM eCopy ORDER by deptno, sal desc
+
+
+desc dual;
+
+SELECT CONCAT('JONNY','RAJPUT') FROM dual;
+
+SELECT INSTR('JONNY','N') FROM DUAL
+
+SELECT LENGTH('JONNY') FROM dual;
+
+SELECT LENGTH(ENAME) FROM emp;
+
+SELECT ADD_MONTHS(sysdate, 11) FROM dual;
+
+SELECT EXTRACT(YEAR FROM sysdate) FROM dual;
+
+SELECT EXTRACT(MONTH FROM sysdate) FROM dual;
+
+SELECT EXTRACT(DAY FROM sysdate) FROM dual;
+
+SELECT LAST_DAY(sysdate) FROM dual;
+
+SELECT MONTHS_BETWEEN(sysdate,ADD_MONTHS(sysdate,27)) FROM dual;
+
+SELECT NEXT_DAY(sysdate,'FRIDAY') FROM dual;
+
+SELECT sal,sal+NVL(comm,0) FROM emp
+
+SELECT sum(sal) FROM emp;
+
+SELECT min(sal) FROM emp;
+
+SELECT max(sal) FROM emp;
+
+SELECT ROUND(avg(sal)) FROM emp;
+
+SELECT COUNT(*) FROM emp;
+
+SELECT COUNT(DISTINCT comm) FROM emp;
+
+SELECT ROUND(AVG(NVL(comm,0))) FROM emp;
+
+SELECT ename, NVL2(comm,sal+comm,sal) "GROSS PAY",sal FROM emp
+
+SELECT deptno FROM emp GROUP BY deptno,job ORDER BY deptno, job desc
+
+SELECT deptno,AVG(sal) FROM emp GROUP BY deptno,sal;
+
+SELECT deptno, MAX(AVG(sal))
+FROM emp
+GROUP BY deptno;
+
+SELECT ROUND(MAX(AVG(SAL))) FROM emp GROUP BY deptno
+
+SELECT mgr,min(sal) FROM emp WHERE mgr IS NOT NULL GROUP BY mgr
+ ORDER BY min(sal) desc
+
+SELECT deptno,job ,SUM(sal) FROM emp GROUP BY deptno,job Order BY deptno
+
+SELECT job,SUM(sal*12) FROM emp WHERE EXTRACT(YEAR FROM HIREDATE)= 1981 GROUP BY JOB
+
+
+SELECT mgr,COUNT(empno) FROM emp WHERE MGR IS NOT NULL GROUP BY mgr ORDER BY  mgr asc;
+
+SELECT COUNT(*) FROM emp WHERE job='CLERK';
+
+SELECT SUM(sal) FROM emp WHERE job='MANAGER';
+
+SELECT deptno,job,sum(SAL) FROM emp GROUP BY deptno,job HAVING sum(SAL)>1000 ORDER bY sum(sal);
+
+SELECT deptno,count(*) FROM emp GROUP BY deptno HAVING count(*)>=2  
+
+SELECT deptno,count(*) FROM emp GROUP By deptno Having count(*)>=3;
+
+SELECT empno,MIN(SAL) From emp GROUP BY empno HAVING MIN(sal);
+
+SELECT DISTINCT sal
+FROM emp e
+WHERE 5>=
+  (SELECT COUNT(DISTINCT sal) FROM emp a WHERE a.sal<=e.sal
+  )
+ORDER BY sal DESC;
