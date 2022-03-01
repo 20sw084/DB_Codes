@@ -38,7 +38,7 @@ SELECT COncat(COncat('john...',ename),COncat('cena...',sal)) as "CNCTNTD" from c
 
 SELECT empno,ename,sal*12+100 "SALARY WITH 100$ Bonus" FROM copy;
 
-SELECT empno,ename, sal+100 "Monthly Salary" FROM emp;
+SELECT empno,ename, (sal+100)*12 "Monthly Salary" FROM emp;
 
 SELECT CONCAT(CONCAT(initcap(ename),': 1 month Salary = '),sal) "Monthly Salary" FROM emp;
 
