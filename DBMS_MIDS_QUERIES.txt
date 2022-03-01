@@ -58,7 +58,7 @@ SELECT ename,job , sal from copy WHERE job= 'SALESMAN';
 SELECT ename,job , sal from copy WHERE job='MANAGER' AND sal>2450;
 
 
-SELECT ename,job , sal from copy WHERE job='MANAGER' OR job='SALESMAN' AND sal>2450;
+SELECT ename,job , sal from copy WHERE (job='MANAGER' OR job='SALESMAN') AND sal>2450;
 
 SELECT * FROM emp WHERE sal BETWEEN 1500 AND 3000;
 
