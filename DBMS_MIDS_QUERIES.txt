@@ -1,4 +1,4 @@
-CREATE TABLE empCopy AS (SELECT * FROM emp);  
+CREATE TABLE empCopy AS (SELECT * FROM emp);
 SELECT * FROM empCopy;
 
 CREATE TABLE t(t_id number PRIMARY KEY, t_name varchar2(10), t_age int);
