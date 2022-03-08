@@ -1,4 +1,4 @@
-use EntranceSystem                        --For creating table in given database 
+use EntranceSystem                        --For creating table in given database
 create table Employees(
 	ID int primary key identity(1,1) not null,
 	FirstName nvarchar(50) not null,
