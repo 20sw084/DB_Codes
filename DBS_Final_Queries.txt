@@ -1,0 +1,26 @@
+CREATE Table emp2 AS SELECT * FROM emp;
+
+SELECT * FROM emp2;
+
+CREATE Table dept2 AS SELECT * FROM dept
+
+SELECT * FROM dept2
+
+// Query 1:
+UPDATE emp2 
+SET job= (SELECT job FROM emp2 WHERE empno=7698), deptno = (SELECT deptno FROM emp2 WHERE empno=7698) WHERE empno=7788;
+
+// Query 2:  // WRONG
+UPDATE emp2 SET deptno= (SELECT deptno FROM emp2 WHERE job=(SELECT job FROM emp2 WHERE empno=7788)) WHERE  (SELECT job FROM emp2 WHERE empno=7788);
+
+// Query 1:
+Delete FROM emp2 WHERE deptno=(SELECT deptno FROM dept2 WHERE dname='SALES');
+
+DESC dept2
+// Query 2: 
+ALTER TABLE dept2
+RENAME to depart;
+
+//Query 3:
+Delete FROM emp2 WHERE deptno=(SELECT deptno FROM dept2 WHERE dname='SALES');
+DELETE  FROM dept2 WHERE deptno=30
