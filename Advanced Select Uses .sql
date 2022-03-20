@@ -1,4 +1,4 @@
-Select [FirstName],[LastName]  
+Select [FirstName],[LastName]   
 From [Employees]
 Where LastName='Rajput';
 
