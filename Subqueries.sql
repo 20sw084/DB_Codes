@@ -23,3 +23,6 @@ SELECT sal*12 FROM emp WHERE sal < ALL(SELECT sal FROM emp Where deptno IN (20,3
 
 
 SELECT * FROM emp;
+
+
+SELECT ename, sal FROM emp WHERE sal > (SELECT MIN(sal) FROM (SELECT avg(sal) sal FROM emp GROUP BY deptno) );
