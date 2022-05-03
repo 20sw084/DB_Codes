@@ -185,3 +185,11 @@ SELECT job,deptno,SUM(sal) FROM copy GROUP BY job,deptno;
 SELECT job,hiredate,SUM(sal*12) FROM copy WHERE hiredate LIKE '%1981' AND GROUP BY job,hiredate;
 SELECT job,SUM(sal*12) FROM copy GROUP BY job;
 
+//  Least 5 Earners of emp table
+SELECT *
+FROM emp e
+WHERE 5>
+    (SELECT count(*)
+     FROM emp
+     WHERE e.sal >sal) 
+ORDER BY sal;
