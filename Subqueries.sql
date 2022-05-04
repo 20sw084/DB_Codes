@@ -21,6 +21,7 @@ WHERE hiredate <
 
 
 SELECT sal*12 FROM emp WHERE sal < ALL(SELECT sal FROM emp Where deptno IN (20,30));
+SELECT sal FROM emp WHERE sal <ANY(SELECT MIN(sal) FROM emp WHERE deptno IN (20,30) GROUP BY deptno) AND deptno NOT IN (20,30)
 
 
 SELECT * FROM emp;
