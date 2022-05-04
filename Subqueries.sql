@@ -1,5 +1,5 @@
 SELECT dname FROM dept WHERE deptno IN (SELECT deptno FROM emp WHERE sal > (SELECT MIN(sal) FROM emp WHERE deptno=20) AND deptno NOT IN 20 GROUP BY deptno);
- 
+
 
 Select * FROM emp WHERE sal IN (SELECT max(sal) FROM emp GROUP BY deptno);
 
