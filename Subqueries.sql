@@ -28,3 +28,4 @@ SELECT * FROM emp;
 
 
 SELECT ename, sal FROM emp WHERE sal > (SELECT MIN(sal) FROM (SELECT avg(sal) sal FROM emp GROUP BY deptno) );
+SELECT ename, sal FROM emp WHERE sal > (SELECT MIN(AVG(sal)) FROM emp GROUP BY deptno)
