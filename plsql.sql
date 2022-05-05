@@ -175,3 +175,39 @@ end if;
 end loop; 
 end; 
 
+Write a PL/SQL code that takes a digit between 1 to 9 as input from user
+and if the digit is < 5 then displays it’s a small number otherwise displays
+that it is a large number(make use of loop labels and loop control
+statements).
+
+
+Write a PL/SQL code that displays the following output:
+1
+12
+123
+1234
+………
+12345678910
+
+
+DECLARE
+	-- declare variable str , len
+	-- and str1 of datatype varchar
+	str VARCHAR(20) := 'skeegrofskeeg';
+	len NUMBER;
+	str1 VARCHAR(20);
+BEGIN
+	-- Here we find the length of string
+	len := Length(str);
+
+	-- here we starting a loop from max len to 1
+	FOR i IN REVERSE 1.. len LOOP
+		-- assigning the reverse string in str1			
+		str1 := str1
+				|| Substr(str, i, 1);
+	END LOOP;
+
+	dbms_output.Put_line('Reverse of string is '
+						|| str1);
+END;
+-- Program End
