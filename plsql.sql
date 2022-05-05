@@ -110,3 +110,68 @@ dbms_output.put_line ('Employee Name' ||emp_rec.ename );
 dbms_output.put_line ('Employee Salary' ||emp_rec.sal );
 END;
 /
+
+
+Control Structures
+DECLARE
+v_num NUMBER ;
+BEGIN
+v_num := &Enter_Number;
+IF v_num = 1 THEN
+DBMS_OUTPUT.PUT_LINE ('WELCOME');
+END IF;
+END ;
+/
+
+DECLARE
+v_num NUMBER ;
+BEGIN
+v_num := &Enter_number;
+IF v_num = 1 THEN
+DBMS_OUTPUT.PUT_LINE('WELCOME');
+ELSE
+DBMS_OUTPUT.PUT_LINE ('BYE');
+END IF;
+END ;
+/
+
+FOR LOOP
+BEGIN
+FOR i IN 1 ..10 LOOP
+DBMS_Output.PUT_LINE(i);
+END LOOP;
+END;
+
+FOR REVERSE LOOP
+BEGIN
+FOR i IN REVERSE 1 ..10 LOOP
+DBMS_Output.PUT_LINE(i);
+END LOOP;
+END;
+
+
+DECLARE
+i number(1);
+j number(1);
+BEGIN
+<< outer_loop >>
+FOR i IN 1..3 LOOP
+<< inner_loop >>
+FOR j IN 1..3 LOOP
+dbms_output.put_line('i is: '|| i || ' and j is: ' || j);
+END loop inner_loop;
+END loop outer_loop;
+END ;
+
+
+declare 
+ x number := 0; 
+begin 
+for x in 1..10 loop 
+if mod(x,2)=0 then 
+dbms_output.put_line ( x); 
+end if; 
+ 
+end loop; 
+end; 
+
