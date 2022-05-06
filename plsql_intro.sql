@@ -174,11 +174,21 @@ end if;
  
 end loop; 
 end; 
-
+///////////////INCOMPLETE///////////////
 Write a PL/SQL code that takes a digit between 1 to 9 as input from user
 and if the digit is < 5 then displays it’s a small number otherwise displays
 that it is a large number(make use of loop labels and loop control
 statements).
+
+DECLARE 
+i number(1) := 2;
+BEGIN
+IF i<5 THEN
+dbms_output.put_line('ITS  A SMALL NUMBER');
+ELSE
+dbms_output.put_line('ITS  A LARGE NUMBER');
+END IF;
+END;
 
 
 DECLARE 
