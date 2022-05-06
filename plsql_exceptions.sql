@@ -62,6 +62,20 @@ DBMS_OUTPUT.PUT_LINE ('CHECK DATE') ;
 END;
 
 
-
 Write a PL/SQL code that throws the DUP_VAL_ON_INDEX and
 then handles it with the help of an appropriate message.
+
+CREATE TABLE c AS SELECT * FROM emp;
+desc c;
+ALTER TABLE c ADD PRIMARY KEY (empno);
+
+BEGIN
+INSERT INTO c VALUES(7782,'Musk','ANALYST',7566,null,3280,null,20);
+EXCEPTION
+WHEN DUP_VAL_ON_INDEX 
+THEN 
+DBMS_OUTPUT.PUT_LINE('ERROR! Primary Key Constraint Violation');
+WHEN others THEN
+dbms_output.put_line('Error!');
+END;
+
