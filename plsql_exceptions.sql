@@ -79,3 +79,6 @@ WHEN others THEN
 dbms_output.put_line('Error!');
 END;
 
+Write a PL/SQL code that throws the TOO_MANY_ROWS and then
+handles it with the help of an appropriate message.
+
