@@ -181,13 +181,19 @@ that it is a large number(make use of loop labels and loop control
 statements).
 
 
-Write a PL/SQL code that displays the following output:
-1
-12
-123
-1234
-………
-12345678910
+DECLARE 
+i number(1);
+j number(1);
+BEGIN
+<< outer_loop >>
+FOR i IN 1..10 LOOP
+<< inner_loop >>
+FOR j IN 1..i LOOP
+dbms_output.put(j);
+END loop inner_loop;
+dbms_output.put_line(j);
+END loop outer_loop;
+END ;
 
 
 DECLARE
