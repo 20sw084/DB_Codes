@@ -82,3 +82,24 @@ END;
 Write a PL/SQL code that throws the TOO_MANY_ROWS and then
 handles it with the help of an appropriate message.
 
+Write a PL/SQL code that throws the TOO_MANY_ROWS and then
+handles it with the help of an appropriate message.
+
+DECLARE
+    l_name c.ename%TYPE;
+    l_customer_id c.empno%TYPE := 7788;
+BEGIN
+    -- get the customer
+    SELECT ename INTO l_name
+    FROM c
+    WHERE empno > l_customer_id;
+    
+    -- show the customer name   
+    dbms_output.put_line('Customer name is ' || l_name);
+    EXCEPTION 
+        WHEN NO_DATA_FOUND THEN
+            dbms_output.put_line('Customer ' || l_customer_id ||  ' does not exist');
+        WHEN TOO_MANY_ROWS THEN
+            dbms_output.put_line('The database returns more than one EMPLOYEE');    
+END;
+/
