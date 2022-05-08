@@ -1,4 +1,4 @@
-CREATE Table emp2 AS SELECT * FROM emp;
+CREATE Table emp2 AS SELECT * FROM emp; 
 
 SELECT * FROM emp2;
 
